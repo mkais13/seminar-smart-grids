@@ -1,0 +1,21 @@
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14"]
+build-backend = "uv_build"
+
+[project]
+name = "energy-comsumption"
+description = "Prediction of energy consumption of electric busses."
+version = "0.1"
+dependencies = [
+  "numpy",
+  "scikit-learn",
+  "pandas",
+  "matplotlib",
+  "ipykernel",
+]
+requires-python = ">=3.14"
+authors = [
+  {name = "Ingo Bechert"},
+  {name = "Moritz Kaiser"},
+  {name = "Stefan Hahnke"},
+]
