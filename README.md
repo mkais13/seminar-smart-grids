@@ -33,3 +33,7 @@ Using the `-u` flag will cause the `requirements.txt` to be recompiled according
 ## Interactive `.py` files
 
 Each python project may contain a `scripts/` directory, where interactive files are located. These interactive `.py` work similarly to jupyter notebooks in the sense that cells of code can be executed in a desired order, state is persisted and output is immediatly visible. Running these interactive files in VSCode requires the python and the jupyter extensions to be installed.
+
+# ZTBus Dataset
+
+Download the dataset from `https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/626723/ZTBus_compressed.zip?sequence=1&isAllowed=y` and extract it into `datasets/` at the root level of the repo, thats where the code expects the dataset to be.
