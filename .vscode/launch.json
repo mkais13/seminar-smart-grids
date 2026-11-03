@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  
+  "configurations": [
+    {
+      "name": "energy_consumption.main",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "energy_consumption.main",
+      "python": "${workspaceFolder}/apps/energy-comsumption/.energy-comsumption-venv/bin/python",
+      "cwd": "${workspaceFolder}/apps/energy-comsumption"
+    }
+  ]
+}

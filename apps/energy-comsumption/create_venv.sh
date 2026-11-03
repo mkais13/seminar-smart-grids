@@ -14,3 +14,4 @@ fi
 uv venv .energy-comsumption-venv
 source .energy-comsumption-venv/bin/activate
 uv pip install -r requirements.txt
+uv pip install --no-deps -e .

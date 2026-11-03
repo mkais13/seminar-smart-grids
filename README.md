@@ -36,4 +36,4 @@ Each python project may contain a `scripts/` directory, where interactive files 
 
 # ZTBus Dataset
 
-Download the dataset from `https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/626723/ZTBus_compressed.zip?sequence=1&isAllowed=y` and extract it into `datasets/` at the root level of the repo, thats where the code expects the dataset to be.
+Download the dataset from `https://www.research-collection.ethz.ch/entities/researchdata/61ac2f6e-2ca9-4229-8242-aed3b0c0d47c` and put it into the `datasets/` directory. The `metaData.csv` file contains metadata for each driving mission of the dataset. The zip files contain all values, recorded once per second in one csv file per mission. The paper can be found at `https://arxiv.org/pdf/2303.08667`, where e.g. the columns of the dataset are explained in detail.

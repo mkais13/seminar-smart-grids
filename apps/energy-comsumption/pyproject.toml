@@ -19,3 +19,7 @@ authors = [
   {name = "Moritz Kaiser"},
   {name = "Stefan Hahnke"},
 ]
+
+
+[tool.uv.build-backend]
+module-name = "energy_consumption"
