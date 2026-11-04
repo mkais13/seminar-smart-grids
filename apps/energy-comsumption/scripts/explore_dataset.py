@@ -36,11 +36,23 @@ example_df.plot(x="time", y="electric_powerDemand")
 # Plot the temperature over time for one file
 example_df.plot(x="time", y="temperature_ambient")
 # %%
-# Check Metadata
+# Check Metadata and its features against energyConsumption
 metadata_df = energy_consumption.metadata.load_and_prepare_metadata(
     energy_consumption.metadata.PATH_TO_METADATA.resolve()
 )
-metadata_df = metadata_df.sort_values(by="roadTime")
-metadata_df.plot(x="roadTime", y="energyConsumption")
+metadata_df.sort_values(by="roadTime").plot(x="roadTime", y="energyConsumption")
 
+# %%
+columns_to_investigate = [
+    "roadTime",
+    "temperature_ambient_mean",
+    "itcs_numberOfPassengers_mean",
+    "status_gridIsAvailable_mean",
+]
+for column_name in columns_to_investigate:
+    metadata_df.sort_values(by=column_name).plot(x=column_name, y="energyConsumption")
+# %%
+print(metadata_df["busNumber"].unique())
+# %%
+print(metadata_df["busRoute"].unique())
 # %%
