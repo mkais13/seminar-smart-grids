@@ -16,6 +16,8 @@ RELEVANT_COLUMNS = [
     "itcs_numberOfPassengers_mean",
     "status_gridIsAvailable_mean",
 ]
+ROAD_TIME_COLUMN_NAME = "roadTime"
+TRAINING_COLUMNS = RELEVANT_COLUMNS + [ROAD_TIME_COLUMN_NAME]
 
 
 def load_and_prepare_metadata(path_to_metadata: pathlib.Path) -> pd.DataFrame:
