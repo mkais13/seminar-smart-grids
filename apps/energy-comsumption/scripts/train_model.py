@@ -18,7 +18,7 @@ from sklearn.metrics import (
     mean_squared_error,
     r2_score,
 )
-from sklearn.model_selection import HalvingRandomSearchCV, train_test_split
+from sklearn.model_selection import HalvingRandomSearchCV, KFold, train_test_split
 
 # %%
 prepared_metadata_df = load_and_prepare_metadata(PATH_TO_METADATA.resolve())
@@ -43,7 +43,9 @@ print(f"R2: {r2}")
 # Create unity plot of results
 plt.scatter(x=targets_test, y=predictions_test)
 plt.axline((0, 0), slope=1, color="red", linestyle="--", label="Unity line")
-plt.title("Actual vs. Predicted Energy Consumption per trip")
+plt.title(
+    f"Actual vs. Predicted Energy Consumption per trip. Total trips: {len(targets_test)}"
+)
 plt.xlabel("Actual Energy Consumption [kWh]")
 plt.ylabel("Predicted Energy Consumption [kWh]")
 plt.legend()
@@ -76,6 +78,9 @@ plt.fill_between(
 )
 plt.axline((0, 0), slope=1, color="red", linestyle="--", label="Unity line")
 plt.scatter(x=x_sorted, y=mean, s=8, label="Mean prediction")
+plt.title(
+    f"Upper, Lower and Mean Energy Consumption per trip. Total trips: {len(order)}"
+)
 plt.xlabel("Actual Energy Consumption [kWh]")
 plt.ylabel("Predicted Energy Consumption [kWh]")
 plt.legend()
@@ -110,7 +115,7 @@ for upper_alpha in upper_alphas:
         label=f"{upper_alpha:.0%} quantile",
         alpha=0.5,
     )
-plt.title("Upper quantile predictions per trip")
+plt.title(f"Upper quantile predictions per trip. Total trips: {len(order)}")
 plt.xlabel("Actual Energy Consumption [kWh]")
 plt.ylabel("Predicted Energy Consumption [kWh]")
 plt.legend()
@@ -179,7 +184,57 @@ for upper_alpha in upper_alphas:
         label=f"{upper_alpha:.0%} quantile",
         alpha=0.5,
     )
-plt.title("Upper quantile predictions per trip, optimized hyperparams")
+plt.title(
+    f"Upper quantile predictions per trip, optimized hyperparams. Total_trips: {len(order)}"
+)
+plt.xlabel("Actual Energy Consumption [kWh]")
+plt.ylabel("Predicted Energy Consumption [kWh]")
+plt.legend()
+plt.grid()
+plt.show()
+
+# %%
+# With k-fold cross validation, we can test the model for all samples
+
+predictions_kfold = {}
+kfold = KFold(n_splits=5)
+for train_indices, test_indices in kfold.split(features, targets):
+    kfold_features_train = features.iloc[train_indices]
+    kfold_features_test = features.iloc[test_indices]
+    kfold_targets_train = targets.iloc[train_indices]
+    kfold_targets_test = targets.iloc[test_indices]
+    quantile_metrics_kfold = {}
+    for upper_alpha in upper_alphas:
+        model = HistGradientBoostingRegressor(
+            **best_hyperparameters,
+            loss="quantile",
+            quantile=upper_alpha,
+        )
+        kfold_model = model.fit(kfold_features_train, kfold_targets_train)
+        fold_predictions = kfold_model.predict(kfold_features_test)
+        if predictions_kfold.get(upper_alpha) is None:
+            predictions_kfold[upper_alpha] = np.empty(len(targets))
+        predictions_kfold[upper_alpha][test_indices] = fold_predictions
+        quantile_metrics_kfold[upper_alpha] = mean_pinball_loss(
+            kfold_targets_test, fold_predictions
+        )
+    print(quantile_metrics_kfold)
+# %%
+order = np.argsort(targets.to_numpy())
+x_sorted = targets.to_numpy()[order]
+
+plt.figure()
+plt.axline((0, 0), slope=1, color="red", linestyle="--", label="Unity line")
+for upper_alpha in upper_alphas:
+    plt.plot(
+        x_sorted,
+        predictions_kfold[upper_alpha][order],
+        label=f"{upper_alpha:.0%} quantile",
+        alpha=0.5,
+    )
+plt.title(
+    f"Upper quantile predictions per trip, optimized hyperparams, k-folded with k=5. Total_trips: {len(order)}"
+)
 plt.xlabel("Actual Energy Consumption [kWh]")
 plt.ylabel("Predicted Energy Consumption [kWh]")
 plt.legend()
