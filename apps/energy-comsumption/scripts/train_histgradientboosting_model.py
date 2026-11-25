@@ -28,6 +28,7 @@ targets = prepared_metadata_df[TARGET_COLUMN_NAME]
 features_train, features_test, targets_train, targets_test = train_test_split(
     features, targets
 )
+# %%
 model = HistGradientBoostingRegressor()
 model.fit(features_train, targets_train)
 predictions_test = model.predict(features_test)
