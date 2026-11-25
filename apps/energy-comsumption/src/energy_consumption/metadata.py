@@ -27,8 +27,8 @@ def load_and_prepare_metadata(path_to_metadata: pathlib.Path) -> pd.DataFrame:
     ]
     # calculate total time spend on the road
     filtered_metadata_df["roadTime"] = pd.to_datetime(
-        metadata_df["startTime_iso"]
-    ) - pd.to_datetime(metadata_df["endTime_iso"])
+        metadata_df["endTime_iso"]
+    ) - pd.to_datetime(metadata_df["startTime_iso"])
     filtered_metadata_df["roadTime"] = filtered_metadata_df[
         "roadTime"
     ].dt.total_seconds()

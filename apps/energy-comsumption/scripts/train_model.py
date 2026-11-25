@@ -59,7 +59,13 @@ quantile_models = {}
 quantile_predictions = {}
 quantile_metrics = {}
 for alpha in alphas:
-    model = HistGradientBoostingRegressor(loss="quantile", quantile=alpha)
+    model = HistGradientBoostingRegressor(
+        loss="quantile",
+        quantile=alpha,
+        # enabling a monotic constraint causes the quantile predictions to diverge from the unity line,
+        # especially for higher consumptions
+        # monotonic_cst={"drivenDistance": 1, "temperature_ambient_mean": 1},
+    )
     quantile_models[alpha] = model.fit(features_train, targets_train)
     quantile_predictions[alpha] = model.predict(features_test)
     quantile_metrics[alpha] = mean_pinball_loss(
