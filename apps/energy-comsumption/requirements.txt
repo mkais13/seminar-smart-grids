@@ -53,6 +53,7 @@ matplotlib==3.11.2
     #   energy-comsumption (pyproject.toml)
     #   lifelines
     #   ngboost
+    #   seaborn
 matplotlib-inline==0.2.2
     # via
     #   ipykernel
@@ -79,6 +80,7 @@ numpy==2.5.4
     #   pandas
     #   scikit-learn
     #   scipy
+    #   seaborn
 packaging==26.3
     # via
     #   ipykernel
@@ -88,6 +90,7 @@ pandas==3.1.0
     #   energy-comsumption (pyproject.toml)
     #   formulaic
     #   lifelines
+    #   seaborn
 parso==0.8.7
     # via jedi
 pexpect==4.9.0
@@ -130,6 +133,8 @@ scipy==1.18.1
     #   lifelines
     #   ngboost
     #   scikit-learn
+seaborn==0.13.2
+    # via energy-comsumption (pyproject.toml)
 six==1.17.0
     # via python-dateutil
 stack-data==0.6.3
